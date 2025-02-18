@@ -19,26 +19,26 @@ int turn = 1;
 int start = 1;
 char player = '1';
 
-void displayBoard();
+void gameSceen();
 void moveAgent(int row,int column, char player);
 void checkWin();
 
 void moveMove(int row,int column,int rowE,int columnE);
-void displayBoardBack();
+void gameSceenBack();
 
 int main(void){
 
-    strcpy(board[3][2], "J1");
-    strcpy(board[3][1], "Q1");
-    strcpy(board[3][3], "K1");
+    strcpy(board[0][2], "J1");
+    strcpy(board[0][1], "Q1");
+    strcpy(board[0][3], "K1");
 
     strcpy(board[4][1], "J2");
     strcpy(board[4][2], "Q2");
     strcpy(board[4][3], "K2");
 
-    boardBack[3][1] = '1';
-    boardBack[3][3] = '1';
-    boardBack[3][2] = '1';
+    boardBack[0][1] = '1';
+    boardBack[0][3] = '1';
+    boardBack[0][2] = '1';
 
     boardBack[4][1] = '2';
     boardBack[4][2] = '2';
@@ -51,8 +51,8 @@ int main(void){
     while (start == 1) {
         checkWin();
 
-        // displayBoardBack();
-        displayBoard();
+        // gameSceenBack();
+        gameSceen();
         printf("Player %c, select agent\n",player);
 
         printf("Enter the row [1-5]: ");
@@ -75,7 +75,7 @@ int main(void){
 }
 
 
-void displayBoard() {
+void gameSceen() {
 
     printf("\n  ____________________\n");
     for (int i = 0; i < 5; i++) {
@@ -101,7 +101,7 @@ void displayBoard() {
 
 }
 
-// void displayBoardBack() {
+// void gameSceenBack() {
 
 //     printf("\n  ____________________\n");
 //     for (int i = 0; i < 5; i++) {
@@ -179,17 +179,17 @@ void  checkWin(){
 
     if(count1 == 0 && count2 == 0){
         printf("!!!! DRAW !!!!");
-        displayBoard();
+        gameSceen();
         start = 0;
     }
     else if(count1 == 0){
         printf("!!!! Plyer 2 WIN !!!!");
-        displayBoard();
+        gameSceen();
         start = 0;
     }
     else if(count2 == 0){
         printf("!!!! Plyer 1 WIN !!!!");
-        displayBoard();
+        gameSceen();
         start = 0;
     }
 }
