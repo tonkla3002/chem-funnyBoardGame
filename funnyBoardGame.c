@@ -28,17 +28,17 @@ void gameSceenBack();
 
 int main(void){
 
-    strcpy(board[0][1], "J1");
-    strcpy(board[0][2], "Q1");
-    strcpy(board[0][3], "K1");
+    strcpy(board[3][1], "J1");
+    strcpy(board[3][3], "Q1");
+    strcpy(board[3][2], "K1");
 
     strcpy(board[4][1], "J2");
     strcpy(board[4][2], "Q2");
     strcpy(board[4][3], "K2");
 
-    boardBack[0][1] = '1';
-    boardBack[0][3] = '1';
-    boardBack[0][2] = '1';
+    boardBack[3][1] = '1';
+    boardBack[3][3] = '1';
+    boardBack[3][2] = '1';
 
     boardBack[4][1] = '2';
     boardBack[4][2] = '2';
@@ -201,15 +201,15 @@ void moveMove(int row,int column,int rowE,int columnE) {
         boardBack[rowE][columnE] = ' ';
         boardBack[row][column] = ' ';
     }
-    else if (strcmp(board[row][column], " ") != 0|| 
-        (board[rowE][columnE][0] == 'K' && board[row][column][0] == 'J') || 
-        (board[rowE][columnE][0] == 'J' && board[row][column][0] == 'Q') || 
-        (board[rowE][columnE][0] == 'Q' && board[row][column][0] == 'K')) {
+    else if (strcmp(board[rowE][columnE], " ") == 0|| 
+        (strncmp(&board[rowE][columnE][0], "K", 1) == 0 && strncmp(&board[row][column][0], "J", 1) == 0) || 
+        (strncmp(&board[rowE][columnE][0], "J", 1) == 0 && strncmp(&board[row][column][0], "Q", 1) == 0) || 
+        (strncmp(&board[rowE][columnE][0], "Q", 1) == 0 && strncmp(&board[row][column][0], "K", 1) == 0)) {
 
-        strcpy(board[rowE][columnE],board[row][column]);  // Copy character
-        strcpy(board[row][column], " ");  // Set empty space
-        boardBack[rowE][columnE] = boardBack[row][column];  // Copy character
-        boardBack[row][column] = ' ';  // Set empty space
+        strcpy(board[rowE][columnE], board[row][column]);  
+        strcpy(board[row][column], " ");  
+        boardBack[rowE][columnE] = boardBack[row][column];  
+        boardBack[row][column] = ' ';  
     }
 
 
