@@ -28,17 +28,17 @@ void gameSceenBack();
 
 int main(void){
 
-    strcpy(board[3][1], "J1");
-    strcpy(board[3][3], "Q1");
-    strcpy(board[3][2], "K1");
+    strcpy(board[0][1], "J1");
+    strcpy(board[0][2], "Q1");
+    strcpy(board[0][3], "K1");
 
     strcpy(board[4][1], "J2");
     strcpy(board[4][2], "Q2");
     strcpy(board[4][3], "K2");
 
-    boardBack[3][1] = '1';
-    boardBack[3][3] = '1';
-    boardBack[3][2] = '1';
+    boardBack[0][1] = '1';
+    boardBack[0][3] = '1';
+    boardBack[0][2] = '1';
 
     boardBack[4][1] = '2';
     boardBack[4][2] = '2';
