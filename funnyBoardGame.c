@@ -20,25 +20,25 @@ int start = 1;
 char player = '1';
 
 void gameSceen();
-void movePlayer(int row,int column, char player);
-void checkPlayerWin();
+void moveAgent(int row,int column, char player);
+void checkWin();
 
 void moveMove(int row,int column,int rowE,int columnE);
-// void gameSceenBack();
+void gameSceenBack();
 
 int main(void){
 
-    strcpy(board[0][1], "J1");
-    strcpy(board[0][2], "Q1");
-    strcpy(board[0][3], "K1");
+    strcpy(board[3][2], "J1");
+    strcpy(board[3][1], "Q1");
+    strcpy(board[3][3], "K1");
 
     strcpy(board[4][1], "J2");
     strcpy(board[4][2], "Q2");
     strcpy(board[4][3], "K2");
 
-    boardBack[0][1] = '1';
-    boardBack[0][3] = '1';
-    boardBack[0][2] = '1';
+    boardBack[3][1] = '1';
+    boardBack[3][3] = '1';
+    boardBack[3][2] = '1';
 
     boardBack[4][1] = '2';
     boardBack[4][2] = '2';
@@ -49,7 +49,7 @@ int main(void){
     printf("Player 2 : J2,Q2,K2\n");
 
     while (start == 1) {
-        checkPlayerWin();
+        checkWin();
 
         // gameSceenBack();
         gameSceen();
@@ -61,14 +61,14 @@ int main(void){
         printf("Enter the column [1-5]: ");
         scanf("%d", &column);
 
-        movePlayer(row-1,column-1,player);
+        moveAgent(row-1,column-1,player);
 
-        // printf(checkPlayerWin());
+        // printf(checkWin());
         if(player == '2')
             player = '1';
         else
             player ='2';
-        checkPlayerWin();
+        checkWin();
 
     }
 
@@ -128,7 +128,7 @@ void gameSceen() {
 // }
 
 
-void movePlayer(int row,int column, char player) {
+void moveAgent(int row,int column, char player) {
 
     int movement = 0;
 
@@ -163,7 +163,7 @@ void movePlayer(int row,int column, char player) {
         }
 }
 
-void  checkPlayerWin(){
+void  checkWin(){
     int count1 = 0;
     int count2 = 0;
     for (int i = 0; i < 5; i++) {
@@ -195,7 +195,13 @@ void  checkPlayerWin(){
 }
 
 void moveMove(int row,int column,int rowE,int columnE) {
-    if (board[rowE][columnE][0] ==  ' '|| 
+     if(board[rowE][columnE][0] == board[row][column][0] ){
+        strcpy(board[rowE][columnE], " ");
+        strcpy(board[row][column], " ");
+        boardBack[rowE][columnE] = ' ';
+        boardBack[row][column] = ' ';
+    }
+    else if (strcmp(board[row][column], " ") != 0|| 
         (board[rowE][columnE][0] == 'K' && board[row][column][0] == 'J') || 
         (board[rowE][columnE][0] == 'J' && board[row][column][0] == 'Q') || 
         (board[rowE][columnE][0] == 'Q' && board[row][column][0] == 'K')) {
@@ -206,12 +212,6 @@ void moveMove(int row,int column,int rowE,int columnE) {
         boardBack[row][column] = ' ';  // Set empty space
     }
 
-    else if(board[rowE][columnE][0] == board[row][column][0] ){
-        strcpy(board[rowE][columnE], " ");
-        strcpy(board[row][column], " ");
-        boardBack[rowE][columnE] = ' ';
-        boardBack[row][column] = ' ';
-    }
 
     else{
         printf("!!! Please select again !!!\n\n");
