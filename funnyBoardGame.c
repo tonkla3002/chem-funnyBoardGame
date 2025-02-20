@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <string.h>
+#include <ctype.h>
 
-
-char board[5][5][3] = {{' ', ' ', ' ', ' ', ' '},
+char board[5][5] = {{' ', ' ', ' ', ' ', ' '},
                     {' ', ' ', ' ', ' ', ' '},
                     {' ', ' ', ' ', ' ', ' '},
                     {' ', ' ', ' ', ' ', ' '},
@@ -19,151 +18,143 @@ int turn = 1;
 int start = 1;
 char player = '1';
 
-void gameSceen();
-void moveAgent(int row,int column, char player);
-void checkWin();
+void displayBoard();
+void playMove(int row,int column, char player);
+void checkStatus();
 
+void selectChess();
 void moveMove(int row,int column,int rowE,int columnE);
-void gameSceenBack();
+
 
 int main(void){
 
-    strcpy(board[0][1], "J1");
-    strcpy(board[0][2], "Q1");
-    strcpy(board[0][3], "K1");
+    board[3][3] = 'J';
+    board[3][1] = 'Q';
+    board[3][2] = 'K';
 
-    strcpy(board[4][1], "J2");
-    strcpy(board[4][2], "Q2");
-    strcpy(board[4][3], "K2");
+    board[4][1] = 'j';
+    board[4][2] = 'q';
+    board[4][3] = 'k';
 
-    boardBack[0][1] = '1';
-    boardBack[0][3] = '1';
-    boardBack[0][2] = '1';
+    boardBack[3][1] = '1';
+    boardBack[3][3] = '1';
+    boardBack[3][2] = '1';
 
     boardBack[4][1] = '2';
     boardBack[4][2] = '2';
     boardBack[4][3] = '2';
 
-    printf("\n\nWelcome to the Funny Board Game\n");
-    printf("Player 1 : J1,Q1,K1\n");
-    printf("Player 2 : J2,Q2,K2\n");
-
     while (start == 1) {
-        checkWin();
+        checkStatus();
 
-        // gameSceenBack();
-        gameSceen();
+        displayBoard();
         printf("Player %c, select agent\n",player);
 
-        printf("Enter the row [1-5]: ");
-        scanf("%d", &row);
 
-        printf("Enter the column [1-5]: ");
-        scanf("%d", &column);
+       selectChess();
 
-        moveAgent(row-1,column-1,player);
-
-        // printf(checkWin());
+        // printf(checkStatus());
         if(player == '2')
             player = '1';
         else
             player ='2';
-        checkWin();
+        checkStatus();
 
     }
 
 }
 
 
-void gameSceen() {
-
-    printf("\n  ____________________\n");
+void displayBoard() {
+    printf("\n    1   2   3   4   5\n");
+    printf("  +---+---+---+---+---+\n");
     for (int i = 0; i < 5; i++) {
-
+        printf("%d |", i + 1);
         for (int j = 0; j < 5; j++) {
-
-            if(j == 0){
-                int num = i+1;
-                printf("%d| %c ",num, board[i][j][0]);
-            }
-            else{
-                printf("| %s ", board[i][j]);
-
-            }
-
+            printf(" %c |", board[i][j]);
         }
-
-        printf("|");
-        printf("\n  ____________________\n");
-
+        printf("\n  +---+---+---+---+---+\n");
     }
-    printf("  1   2   3   4   5\n");
-
 }
 
-// void gameSceenBack() {
-
-//     printf("\n  ____________________\n");
-//     for (int i = 0; i < 5; i++) {
-
-//         for (int j = 0; j < 5; j++) {
-
-//             if(j == 0){
-//                 int num = i+1;
-//                 printf("%d| %c ",num, boardBack[i][j]);
-//             }
-//             else{
-//                 printf("| %c ", boardBack[i][j]);
-
-//             }
-
-//         }
-
-//         printf("|");
-//         printf("\n  ____________________\n");
-
-//     }
-//     printf("  1   2   3   4   5\n");
-
-// }
 
 
-void moveAgent(int row,int column, char player) {
+void playMove(int row,int column, char player) {
 
     int movement = 0;
 
-        if (boardBack[row][column] == player) {
+    if (boardBack[row][column] == player) {
 
-            printf("\n1.Up\n2.Left\n3.Right\n4.Down\nSelect position :");
-            scanf("%d", &movement);
+        printf("\n1)Up\n2)Left\n3)Right\n4)Down\nSelect your movement :");
+        scanf("%d", &movement);
 
-            switch (movement) {
-                case 1:
-                    moveMove(row,column,row-1,column);
-                    break;
+        switch (movement) {
+            case 1:
+                moveMove(row,column,row-1,column);
+                break;
 
-                case 2:
-                    moveMove(row,column,row,column-1);
-                    break;
+            case 2:
+                moveMove(row,column,row,column-1);
+                break;
 
-                case 3:
-                    moveMove(row,column,row,column+1);
-                    break;
+            case 3:
+                moveMove(row,column,row,column+1);
+                break;
 
-                case 4:
-                    moveMove(row,column,row+1,column);
-                    break;
-                
-                }
-                turn++;
+            case 4:
+                moveMove(row,column,row+1,column);
+                break;
+            
         }
-
-        else{
-            printf("Not your agent please select again !!!\n");
-        }
+    }
 }
 
-void  checkWin(){
+void selectChess(){
+    printf("1)J\n2)Q\n3)K\nSelect your agent : ");
+    int agent;
+    char chess;
+    scanf("%d", &agent);
+    
+    switch (agent) {
+        case 1: chess = 'J'; break;
+        case 2: chess = 'Q'; break;
+        case 3: chess = 'K'; break;
+        default: 
+            printf("Please select again !!!\n");
+            return;
+    }
+    char chesslower = tolower(chess);
+    printf("chess lower : %c\n",chesslower);
+    int found = 0;
+    if (player == '1') {
+        printf("Player 1\n");
+        for (int i = 0; i < 5 && !found; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (boardBack[i][j] == player && board[i][j] == chess) {
+                playMove(i, j, player);
+                found = 1; // Mark as found
+                break; // Exit inner loop
+            }
+        }
+    }
+    }
+    else if(player == '2')
+    {
+        printf("Player 2\n");
+        for (int i = 0; i < 5 && !found; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (boardBack[i][j] == player && board[i][j] == chesslower) {
+                playMove(i, j, player);
+                found = 1; // Mark as found
+                break; // Exit inner loop
+                }
+            }
+        }
+    }
+}
+
+
+void  checkStatus(){
     int count1 = 0;
     int count2 = 0;
     for (int i = 0; i < 5; i++) {
@@ -176,44 +167,47 @@ void  checkWin(){
             }
         }
     }
-
     if(count1 == 0 && count2 == 0){
         printf("!!!! DRAW !!!!");
-        gameSceen();
+        displayBoard();
         start = 0;
     }
     else if(count1 == 0){
         printf("!!!! Plyer 2 WIN !!!!");
-        gameSceen();
+        displayBoard();
         start = 0;
     }
     else if(count2 == 0){
         printf("!!!! Plyer 1 WIN !!!!");
-        gameSceen();
+        displayBoard();
         start = 0;
     }
 }
 
 void moveMove(int row,int column,int rowE,int columnE) {
-     if(board[rowE][columnE][0] == board[row][column][0] ){
-        strcpy(board[rowE][columnE], " ");
-        strcpy(board[row][column], " ");
+     if(board[rowE][columnE] == ' ' || 
+        (board[rowE][columnE] == 'k' && board[row][column] == 'J') || 
+        (board[rowE][columnE] == 'j' && board[row][column] == 'Q') || 
+        (board[rowE][columnE] == 'q' && board[row][column] == 'K') ||
+        (board[rowE][columnE] == 'K' && board[row][column] == 'j') || 
+        (board[rowE][columnE] == 'J' && board[row][column] == 'q') || 
+        (board[rowE][columnE] == 'Q' && board[row][column] == 'k')  ){
+
+            board[rowE][columnE] = board[row][column];
+            board[row][column] = ' ';
+            boardBack[rowE][columnE] = boardBack[row][column];
+            boardBack[row][column] = ' ';      
+    }
+    
+    else if(board[rowE][columnE] == board[row][column] ){
+        board[rowE][columnE] = ' ';
+        board[row][column] = ' ';
         boardBack[rowE][columnE] = ' ';
         boardBack[row][column] = ' ';
     }
-    else if (strcmp(board[rowE][columnE], " ") == 0|| 
-        (strncmp(&board[rowE][columnE][0], "K", 1) == 0 && strncmp(&board[row][column][0], "J", 1) == 0) || 
-        (strncmp(&board[rowE][columnE][0], "J", 1) == 0 && strncmp(&board[row][column][0], "Q", 1) == 0) || 
-        (strncmp(&board[rowE][columnE][0], "Q", 1) == 0 && strncmp(&board[row][column][0], "K", 1) == 0)) {
-
-        strcpy(board[rowE][columnE], board[row][column]);  
-        strcpy(board[row][column], " ");  
-        boardBack[rowE][columnE] = boardBack[row][column];  
-        boardBack[row][column] = ' ';  
-    }
-
 
     else{
         printf("!!! Please select again !!!\n\n");
     }
+    turn++;
 }
