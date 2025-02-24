@@ -32,27 +32,27 @@ void checkGoalChess();
 int main(void)
 {
 
-    board[4][3] = 'J';
-    board[4][1] = 'Q';
-    board[4][2] = 'K';
+    board[0][3] = 'J';
+    board[0][1] = 'Q';
+    board[0][2] = 'K';
 
-    board[0][1] = 'j';
-    board[0][2] = 'q';
-    board[0][3] = 'k';
+    board[4][1] = 'j';
+    board[4][2] = 'q';
+    board[4][3] = 'k';
 
-    boardBack[4][1] = '1';
-    boardBack[4][3] = '1';
-    boardBack[4][2] = '1';
+    boardBack[0][1] = '1';
+    boardBack[0][3] = '1';
+    boardBack[0][2] = '1';
 
-    boardBack[0][1] = '2';
-    boardBack[0][2] = '2';
-    boardBack[0][3] = '2';
+    boardBack[4][1] = '2';
+    boardBack[4][2] = '2';
+    boardBack[4][3] = '2';
 
     while (start == 1)
     {
         checkStatus();
         checkGoalChess();
-        displayBoardBack();
+        // displayBoardBack();
         displayBoard();
         printf("Player %c, select agent\n", player);
 
