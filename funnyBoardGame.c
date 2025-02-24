@@ -27,31 +27,31 @@ void moveMove(int row, int column, int rowE, int columnE);
 void eatAgentQ(int row, int column, int rowE, int columnE);
 void displayBoardBack();
 void moveMoveE(int row, int column, int movement);
-void checkGoalchess();
+void checkGoalChess();
 
 int main(void)
 {
 
-    board[3][3] = 'J';
-    board[3][1] = 'Q';
-    board[3][2] = 'K';
+    board[4][3] = 'J';
+    board[4][1] = 'Q';
+    board[4][2] = 'K';
 
-    board[4][1] = 'j';
-    board[4][2] = 'q';
-    board[4][3] = 'k';
+    board[0][1] = 'j';
+    board[0][2] = 'q';
+    board[0][3] = 'k';
 
-    boardBack[3][1] = '1';
-    boardBack[3][3] = '1';
-    boardBack[3][2] = '1';
+    boardBack[4][1] = '1';
+    boardBack[4][3] = '1';
+    boardBack[4][2] = '1';
 
-    boardBack[4][1] = '2';
-    boardBack[4][2] = '2';
-    boardBack[4][3] = '2';
+    boardBack[0][1] = '2';
+    boardBack[0][2] = '2';
+    boardBack[0][3] = '2';
 
     while (start == 1)
     {
         checkStatus();
-        checkGoalchess();
+        checkGoalChess();
         displayBoardBack();
         displayBoard();
         printf("Player %c, select agent\n", player);
@@ -101,6 +101,7 @@ void playMove(int row, int column, char player)
 {
 
     int movement = 0;
+    int space = 0;
 
     // if (boardBack[row][column] == player) {
 
@@ -108,8 +109,32 @@ void playMove(int row, int column, char player)
     {
         printf("\n1)Vertical\n2)Horizontal\nSelect your movement :");
         scanf("%d", &movement);
-        printf("backBoard : %c\n", boardBack[row][column]);
         moveMoveE(row, column, movement);
+    }
+    else if (boardBack[row][column] == 'g' || boardBack[row][column] == 'G')
+    {
+        printf("\n1)Up\n2)Left\n3)Right\n4)Down\nSelect your movement :");
+        scanf("%d", &movement);
+        printf("\n1)1 channel\n2)2 channel\nSelect your movement :");
+        scanf("%d", &space);
+        switch (movement)
+        {
+        case 1:
+            moveMove(row, column, row - space, column);
+            break;
+
+        case 2:
+            moveMove(row, column, row, column - space);
+            break;
+
+        case 3:
+            moveMove(row, column, row, column + space);
+            break;
+
+        case 4:
+            moveMove(row, column, row + space, column);
+            break;
+        }
     }
     else
     {
@@ -159,7 +184,6 @@ void selectChess()
         return;
     }
     char chesslower = tolower(chess);
-    printf("chess lower : %c\n", chesslower);
     int found = 0;
     if (player == '1')
     {
@@ -203,11 +227,11 @@ void checkStatus()
     {
         for (int j = 0; j < 5; j++)
         {
-            if (boardBack[i][j] == '1')
+            if (boardBack[i][j] == '1' || boardBack[i][j] == 'G' || boardBack[i][j] == 'E')
             {
                 count1++;
             }
-            else if (boardBack[i][j] == '2')
+            else if (boardBack[i][j] == '2' || boardBack[i][j] == 'g' || boardBack[i][j] == 'e')
             {
                 count2++;
             }
@@ -278,9 +302,45 @@ void moveMove(int row, int column, int rowE, int columnE)
     turn++;
 }
 
+void moveMoveG(int row, int column, int rowE, int columnE)
+{
+    if (board[rowE][columnE] == ' ' ||
+        (board[rowE][columnE] == 'k' && board[row][column] == 'J') ||
+        (board[rowE][columnE] == 'j' && board[row][column] == 'Q') ||
+        (board[rowE][columnE] == 'q' && board[row][column] == 'K') ||
+        (board[rowE][columnE] == 'K' && board[row][column] == 'j') ||
+        (board[rowE][columnE] == 'J' && board[row][column] == 'q') ||
+        (board[rowE][columnE] == 'Q' && board[row][column] == 'k'))
+    {
+        board[rowE][columnE] = board[row][column];
+        board[row][column] = ' ';
+        boardBack[rowE][columnE] = boardBack[row][column];
+        boardBack[row][column] = ' ';
+    }
+
+    else if (board[rowE][columnE] == ' ' ||
+             (board[rowE][columnE] == 'k' && board[row][column] == 'K') ||
+             (board[rowE][columnE] == 'q' && board[row][column] == 'Q') ||
+             (board[rowE][columnE] == 'j' && board[row][column] == 'J') ||
+             (board[rowE][columnE] == 'K' && board[row][column] == 'k') ||
+             (board[rowE][columnE] == 'Q' && board[row][column] == 'q') ||
+             (board[rowE][columnE] == 'J' && board[row][column] == 'j'))
+    {
+        board[rowE][columnE] = ' ';
+        board[row][column] = ' ';
+        boardBack[rowE][columnE] = ' ';
+        boardBack[row][column] = ' ';
+    }
+
+    else
+    {
+        printf("!!! Please select again !!!\n\n");
+    }
+    turn++;
+}
+
 void moveMoveE(int row, int column, int movement)
 {
-    printf("moveMoveE\n");
     int rowE, columnE;
 
     switch (movement)
@@ -301,51 +361,10 @@ void moveMoveE(int row, int column, int movement)
     default:
         break;
     }
-
-    // if (board[rowE][columnE] == ' ' ||
-    //          (board[rowE][columnE] == 'k' && board[row][column] == 'J') ||
-    //          (board[rowE][columnE] == 'j' && board[row][column] == 'Q') ||
-    //          (board[rowE][columnE] == 'q' && board[row][column] == 'K') ||
-    //          (board[rowE][columnE] == 'K' && board[row][column] == 'j') ||
-    //          (board[rowE][columnE] == 'J' && board[row][column] == 'q') ||
-    //          (board[rowE][columnE] == 'Q' && board[row][column] == 'k'))
-    // {
-    //     if ((board[row][column] == 'K' && board[rowE][columnE] == 'q'))
-    //     {
-    //         boardBack[row][column] = 'E';
-    //     }
-    //     else if ((board[row][column] == 'k' && board[rowE][columnE] == 'Q'))
-    //     {
-    //         boardBack[row][column] = 'e';
-    //     }
-    //     board[rowE][columnE] = board[row][column];
-    //     board[row][column] = ' ';
-    //     boardBack[rowE][columnE] = boardBack[row][column];
-    //     boardBack[row][column] = ' ';
-    // }
-
-    // else if (board[rowE][columnE] == ' ' ||
-    //          (board[rowE][columnE] == 'k' && board[row][column] == 'K') ||
-    //          (board[rowE][columnE] == 'q' && board[row][column] == 'Q') ||
-    //          (board[rowE][columnE] == 'j' && board[row][column] == 'J') ||
-    //          (board[rowE][columnE] == 'K' && board[row][column] == 'k') ||
-    //          (board[rowE][columnE] == 'Q' && board[row][column] == 'q') ||
-    //          (board[rowE][columnE] == 'J' && board[row][column] == 'j'))
-    // {
-    //     board[rowE][columnE] = ' ';
-    //     board[row][column] = ' ';
-    //     boardBack[rowE][columnE] = ' ';
-    //     boardBack[row][column] = ' ';
-    // }
-
-    // else
-    // {
-    //     printf("!!! Please select again !!!\n\n");
-    // }
     turn++;
 }
 
-void checkGoalchess()
+void checkGoalChess()
 {
     for (int i = 0; i < 5; i++)
     {
